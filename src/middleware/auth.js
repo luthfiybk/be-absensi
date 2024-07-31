@@ -10,7 +10,7 @@ const auth = async (req, res, next) => {
     try {
         const decodedToken = jwt.verify(token.split(" ")[1], process.env.SECRET_KEY);
 
-        if (!decodedToken || !decodedToken.nip) {
+        if (!decodedToken || !decodedToken.no_karyawan) {
             return res.status(401).json({ error: "Unauthorized - Invalid Token" });
         }
         

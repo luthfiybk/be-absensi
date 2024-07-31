@@ -1,0 +1,26 @@
+const express = require('express')
+const router = express.Router()
+
+const AuthRoutes = require('./auth.routes')
+const PresensiRoutes = require('./presensi.routes')
+const DivisiRoutes = require('./divisi.routes')
+const RoleRoutes = require('./role.routes')
+const StatusRoutes = require('./status.routes')
+const TitikRoutes = require('./titik.routes')
+const IzinRoutes = require('./izin.routes')
+const UserRoutes = require('./user.routes')
+const SupervisorRoutes = require('./supervisor.routes')
+const SymlinkRoutes = require('./symlink.routes')
+
+router.use('/symlink', SymlinkRoutes)
+router.use('/supervisor', SupervisorRoutes)
+router.use('/user', UserRoutes)
+router.use('/auth', AuthRoutes)
+router.use('/presensi', PresensiRoutes)
+router.use('/divisi', DivisiRoutes)
+router.use('/role', RoleRoutes)
+router.use('/status', StatusRoutes)
+router.use('/titik', TitikRoutes)
+router.use('/izin', IzinRoutes)
+
+module.exports = router

@@ -14,20 +14,19 @@ datasource db {
 }
 
 model User {
-  id          String   @id @default(cuid())
-  nip         String   @unique
-  email       String   @unique
-  nama        String
-  password    String
-  roleId      Int
-  role        Role     @relation(fields: [roleId], references: [id])
-  divisiId    Int?
-  divisi      Divisi?  @relation(fields: [divisiId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  presensi    Presensi[]
-  izin        Izin[]
-  logActivity LogActivity[]
+  id                  String   @id @default(cuid())
+  no_karyawan         String   @unique
+  email               String   @unique
+  nama                String
+  password            String
+  roleId              Int
+  role                Role     @relation(fields: [roleId], references: [id])
+  divisiId            Int?
+  divisi              Divisi?  @relation(fields: [divisiId], references: [id])
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  presensi            Presensi[]
+  izin                Izin[]
 }
 
 model Role {
@@ -48,12 +47,13 @@ model Divisi {
 
 model Presensi {
   id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [nip])
+  no_karyawan    String
+  user      User     @relation(fields: [no_karyawan], references: [no_karyawan])
   tanggal   DateTime  @db.Date
   jamMasuk  DateTime
   latitude  Float
   longitude Float
+  photo     String
   statusId  Int
   status    Status @relation(fields: [statusId], references: [id])
   createdAt DateTime @default(now())
@@ -62,8 +62,8 @@ model Presensi {
 
 model Izin {
   id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [nip])
+  no_karyawan      String
+  user        User     @relation(fields: [no_karyawan], references: [no_karyawan])
   tanggal     DateTime @db.Date
   keterangan  String
   file        String
@@ -91,14 +91,4 @@ model Status {
   updatedAt        DateTime @updatedAt
   izin             Izin[]
   presensi         Presensi[]
-}
-
-model LogActivity {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [nip])
-  activity  String
-  time      DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
