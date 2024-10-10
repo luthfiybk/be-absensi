@@ -11,6 +11,7 @@ const IzinRoutes = require('./izin.routes')
 const UserRoutes = require('./user.routes')
 const SupervisorRoutes = require('./supervisor.routes')
 const SymlinkRoutes = require('./symlink.routes')
+const AdminRoutes = require('./admin.routes')
 
 router.use('/symlink', SymlinkRoutes)
 router.use('/supervisor', SupervisorRoutes)
@@ -22,5 +23,6 @@ router.use('/role', RoleRoutes)
 router.use('/status', StatusRoutes)
 router.use('/titik', TitikRoutes)
 router.use('/izin', IzinRoutes)
+router.use('/admin', AdminRoutes)
 
 module.exports = router

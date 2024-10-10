@@ -71,6 +71,8 @@ const PresensiController = {
             const jam = moment.tz('Asia/Jakarta').format('HH');
             const menit = moment.tz('Asia/Jakarta').format('mm');
             const detik = moment.tz('Asia/Jakarta').format('ss');
+
+            console.log(latitude, longitude)
     
             const near_titik = await Titik.getNearest(latitude, longitude);
 

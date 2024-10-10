@@ -14,7 +14,8 @@ const AuthController = {
             }
 
             if(identifier.includes('@')) {
-                user = await User.getByEmail(identifier)
+                const data = await User.getByEmail(identifier)
+                user = data[0]
             } else {
                 const data = await User.getByNoKaryawan(identifier)
                 user = data[0]
@@ -43,7 +44,7 @@ const AuthController = {
                 }
             )
     
-            res.status(200).json({ token: token, no_karyawan: user.no_karyawan, roleId: user.roleId, nama: user.nama })
+            res.status(200).json({ token: token, no_karyawan: user.no_karyawan, roleId: user.roleId, nama: user.nama, divisi: user.nama_divisi })
             next()
         } catch (error) {
             res.status(500).json({ message: error.message })
@@ -87,6 +88,7 @@ const AuthController = {
                 nama: user[0].nama,
                 email: user[0].email,
                 divisiId: user[0].divisiId,
+                divisi: user[0].nama_divisi,
                 roleId: user[0].roleId
             }
 

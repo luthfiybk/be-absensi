@@ -51,11 +51,14 @@ const User = {
 
     getByEmail: async (email) => {
         try {
-            const response = await prisma.user.findUnique({
-                where: {
-                    email: email
-                }
-            })
+            const response = await prisma.$queryRaw`
+                SELECT User.id, User.nama, User.no_karyawan, User.email, User.password, User.roleId, User.divisiId, Role.nama_role, Divisi.nama_divisi
+                FROM User
+                LEFT JOIN Role ON User.roleId = Role.id
+                LEFT JOIN Divisi ON User.divisiId = Divisi.id
+                WHERE User.email = ${email}
+                LIMIT 1
+            `
 
             return response
         } catch (error) {
