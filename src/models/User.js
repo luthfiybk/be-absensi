@@ -12,7 +12,7 @@ const User = {
         }
     },
 
-    getAll: async (nama, limit, offset, roleId, divisiId) => {
+    getAll: async (nama, limit, offset, roleId, divisiId, accessor) => {
         try {
             const response = await prisma.$queryRaw(Prisma.sql`
                 SELECT User.nama, User.no_karyawan, Role.nama_role as 'role', Divisi.nama_divisi as 'divisi', User.email as 'email' FROM User
@@ -22,6 +22,7 @@ const User = {
                 (User.nama LIKE CONCAT('%', ${nama}, '%') OR User.nama IS NULL)
                 AND (User.roleId IS NULL OR User.roleId = ${roleId} OR ${roleId} IS NULL)
                 AND (User.divisiId = ${divisiId} OR ${divisiId} IS NULL)
+                AND NOT User.no_karyawan = ${accessor}
                 LIMIT ${limit}
                 OFFSET ${offset}
             `)

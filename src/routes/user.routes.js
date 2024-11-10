@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 const auth = require('../middleware/auth')
 
-router.get('/all', UserController.getAll)
+router.get('/all', auth, UserController.getAll)
 router.get('/:no_karyawan', UserController.getByNoKaryawan)
 router.post('/create', UserController.create)
 router.put('/:nip', UserController.update)

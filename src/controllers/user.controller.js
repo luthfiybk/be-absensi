@@ -10,8 +10,9 @@ const UserController = {
             const offset = req.query.offset || (page - 1) * limit
             const roleId = req.query.role || null
             const divisiId = req.query.division || null
+            const accessor = req.decodedToken.no_karyawan
 
-            const response = await User.getAll(search, limit, offset, roleId, divisiId)
+            const response = await User.getAll(search, limit, offset, roleId, divisiId, accessor)
 
             const total_users = await User.count()
 
