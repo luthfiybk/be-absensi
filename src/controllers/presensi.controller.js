@@ -185,6 +185,42 @@ const PresensiController = {
         } catch (error) {
             return res.status(500).json({ message: error.message })
         }
+    },
+
+    rekapPresensi: async (req, res) => {
+        let token = req.headers.authorization;
+
+        if (!token || !token.startsWith("Bearer ")) {
+            return res.status(401).json({ error: "Unauthorized - Missing Token" });
+        }
+
+        const decodedToken = jwt.verify(token.split(" ")[1], process.env.SECRET_KEY);
+
+        if (!decodedToken || !decodedToken.no_karyawan) {
+            return res.status(401).json({ error: "Unauthorized - Invalid Token" });
+        }
+
+        try {
+            const no_karyawan = decodedToken.no_karyawan
+            const limit = req.query.limit || 10
+            const page = req.query.page || 1
+            const offset = req.query.offset || (page - 1) * limit
+
+            const response = await Presensi.rekapPresensi(no_karyawan, limit, offset)
+
+            const mappedResponse = response.map((item) => {
+                return {
+                    ...item,
+                    jamMasuk: moment(item.jamMasuk).tz('Asia/Jakarta').format('HH:mm:ss'),
+                }
+            })
+
+            const total_presensi = await Presensi.countRekapPresensi(no_karyawan)
+
+            return res.status(200).json({ data: mappedResponse, total_data: parseInt(total_presensi[0].total) })
+        } catch (error) {
+            return res.status(500).json({ message: error.message })
+        }
     }
 }
 

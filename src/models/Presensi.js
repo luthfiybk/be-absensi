@@ -138,6 +138,43 @@ const Presensi = {
         } catch (error) {
             throw new Error(error.message)
         }
+    },
+
+    rekapPresensi: async (no_karyawan, limit, offset) => {
+        try {
+            const response = await prisma.$queryRaw(Prisma.sql`
+                SELECT 
+                    Presensi.id,
+                    Presensi.no_karyawan,
+                    Presensi.tanggal, 
+                    Presensi.jamMasuk, 
+                    Presensi.statusId,
+                    Status.nama_status as 'status'
+                FROM Presensi
+                LEFT JOIN Status ON Presensi.statusId = Status.id
+                WHERE Presensi.no_karyawan = ${no_karyawan}
+                LIMIT ${limit}
+                OFFSET ${offset}
+            `)
+
+            return response
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    },
+
+    countRekapPresensi: async (no_karyawan) => {
+        try {
+            const response = await prisma.$queryRaw(Prisma.sql`
+                SELECT COUNT(*) as total
+                FROM Presensi
+                WHERE no_karyawan = ${no_karyawan}
+            `)
+
+            return response
+        } catch (error) {
+            throw new Error(error.message)
+        }
     }
 }
 

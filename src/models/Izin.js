@@ -111,6 +111,42 @@ const Izin = {
         } catch (error) {
             throw new Error(error.message)
         }
+    },
+
+    rekapIzin: async (no_karyawan, limit, offset) => {
+        try {
+            const response = await prisma.$queryRaw(Prisma.sql`
+                SELECT
+                    Izin.id,
+                    Izin.no_karyawan,
+                    Izin.tanggal,
+                    Izin.keterangan,
+                    Izin.statusId,
+                    Status.nama_status as 'status'
+                FROM Izin
+                LEFT JOIN Status ON Izin.statusId = Status.id
+                WHERE Izin.no_karyawan = ${no_karyawan}
+                LIMIT ${limit}
+                OFFSET ${offset}
+            `)
+
+            return response
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    },
+
+    countRekapIzin: async (no_karyawan) => {
+        try {
+            const response = await prisma.$queryRaw(Prisma.sql`
+                SELECT COUNT(*) as total FROM Izin
+                WHERE no_karyawan = ${no_karyawan}
+            `)
+
+            return response
+        } catch (error) {
+            throw new Error(error.message)
+        }
     }
 }
 

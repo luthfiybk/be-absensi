@@ -105,6 +105,41 @@ const IzinController = {
         } catch (error) {
             return res.status(500).json({ message: error.message })
         }
+    },
+
+    rekapIzin: async (req, res) => {
+        let token = req.headers.authorization;
+
+        if (!token || !token.startsWith("Bearer ")) {
+            return res.status(401).json({ error: "Unauthorized - Missing Token" });
+        }
+
+        const decodedToken = jwt.verify(token.split(" ")[1], process.env.SECRET_KEY);
+
+        if (!decodedToken || !decodedToken.no_karyawan) {
+            return res.status(401).json({ error: "Unauthorized - Invalid Token" });
+        }
+
+        try {
+            const no_karyawan = decodedToken.no_karyawan
+            const limit = req.query.limit || 10
+            const page = req.query.page || 1
+            const offset = req.query.offset || (page - 1) * limit
+
+            const response = await Izin.rekapIzin(no_karyawan, limit, offset)
+            const mappedResponse = response.map((item) => {
+                return {
+                    ...item
+                }
+            })
+
+            const total_izin = await Izin.countRekapIzin(no_karyawan)
+
+            return res.status(200).json({ total_data: parseInt(total_izin[0].total), data: mappedResponse })
+        } catch (error) {
+            console.log('cek')
+            return res.status(500).json({ message: error.message })
+        }
     }
 }
 

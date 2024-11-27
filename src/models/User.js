@@ -15,7 +15,8 @@ const User = {
     getAll: async (nama, limit, offset, roleId, divisiId, accessor) => {
         try {
             const response = await prisma.$queryRaw(Prisma.sql`
-                SELECT User.nama, User.no_karyawan, Role.nama_role as 'role', Divisi.nama_divisi as 'divisi', User.email as 'email' FROM User
+                SELECT User.nama, User.no_karyawan, Role.nama_role as 'role', Divisi.nama_divisi as 'divisi', User.email as 'email' 
+                FROM User
                 LEFT JOIN Role ON User.roleId = Role.id
                 LEFT JOIN Divisi ON User.divisiId = Divisi.id
                 WHERE
@@ -115,7 +116,7 @@ const User = {
         } catch (error) {
             throw new Error(error.message)
         }
-    }
+    },
 }
 
 module.exports = User
