@@ -84,16 +84,14 @@ const Presensi = {
         }
     },
 
-    presensiPulang: async (no_karyawan, data) => {
+    presensiPulang: async (no_karyawan, data, tanggal) => {
         try {
-            const response = await prisma.presensi.update({
-                where: {
-                    no_karyawan: no_karyawan
-                },
-                data: {
-                    ...data
-                }
-            })
+            console.log(no_karyawan, new Date(data), tanggal)
+            const response = await prisma.$queryRaw(Prisma.sql`
+                UPDATE Presensi
+                SET jamPulang = ${new Date(data)}
+                WHERE no_karyawan = ${no_karyawan} AND tanggal LIKE ${tanggal};
+            `)
 
             return response
         } catch (error) {
@@ -106,7 +104,7 @@ const Presensi = {
             const response = await prisma.$queryRaw(Prisma.sql`
                 SELECT * 
                 FROM Presensi 
-                WHERE tanggal LIKE ${tanggal} AND (no_karyawan IS NULL OR no_karyawan = ${no_karyawan} OR ${no_karyawan} IS NULL)
+                WHERE tanggal LIKE ${tanggal} AND no_karyawan = ${no_karyawan}
             `)
 
             return response

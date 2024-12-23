@@ -145,10 +145,10 @@ const IzinController = {
 
     check: async (req, res) => {
         try {
-            const nip = req.decodedToken.nip
+            const no_karyawan = req.decodedToken.no_karyawan
             const tanggal = moment().tz('Asia/Jakarta').format('YYYY-MM-DD')
 
-            const response = await Izin.check(nip, tanggal)
+            const response = await Izin.check(no_karyawan, tanggal)
 
             return res.status(200).json(response)
         } catch (error) {

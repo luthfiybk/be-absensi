@@ -114,7 +114,7 @@ const PresensiController = {
                             longitude: longitude,
                             photo: filename,
                             tanggal: tanggal,
-                            jamMasuk: jamMasuk,
+                            jamMasuk: jamMasuk
                         };
                         
                         try {
@@ -138,12 +138,26 @@ const PresensiController = {
     },
 
     presensiPulang: async (req, res) => {
+        let token = req.headers.authorization;
+
+        if (!token || !token.startsWith("Bearer ")) {
+            return res.status(401).json({ error: "Unauthorized - Missing Token" });
+        }
+
+        const decodedToken = jwt.verify(token.split(" ")[1], process.env.SECRET_KEY);
+
+        if (!decodedToken || !decodedToken.no_karyawan) {
+            return res.status(401).json({ error: "Unauthorized - Invalid Token" });
+        }
+
         try {
             const jamPulang = formatISO(new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Jakarta' }), { representation: 'basic' });
-            const no_karyawan = req.decodedToken.no_karyawan;
+            const no_karyawan = decodedToken.no_karyawan;
+            const tanggal = moment().tz('Asia/Jakarta').format('YYYY-MM-DD')
 
-            const response = await Presensi.presensiPulang(no_karyawan, jamPulang)
+            const response = await Presensi.presensiPulang(no_karyawan, jamPulang, tanggal)
 
+            console.log(response, 'response')
             return res.status(201).json(response)
         } catch (error) {
             return res.status(500).json({ message: error.message })
@@ -152,10 +166,10 @@ const PresensiController = {
 
     check: async (req, res) => {
         try {
-            const nip = req.decodedToken.nip
+            const no_karyawan = req.decodedToken.no_karyawan
             const tanggal = moment().tz('Asia/Jakarta').format('YYYY-MM-DD')
 
-            const response = await Presensi.check(nip, tanggal)
+            const response = await Presensi.check(no_karyawan, tanggal)
 
             return res.status(200).json(response)
         } catch (error) {

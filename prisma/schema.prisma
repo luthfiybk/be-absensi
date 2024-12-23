@@ -51,7 +51,7 @@ model Presensi {
   user      User     @relation(fields: [no_karyawan], references: [no_karyawan])
   tanggal   DateTime  @db.Date
   jamMasuk  DateTime
-  jamPulang DateTime
+  jamPulang DateTime?
   latitude  Float
   longitude Float
   photo     String

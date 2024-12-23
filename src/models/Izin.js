@@ -157,7 +157,7 @@ const Izin = {
                 FROM Izin
                 WHERE no_karyawan = ${no_karyawan}
                 AND tanggal = ${tanggal}
-                AND statusId = 6
+                AND statusId = 5 OR statusId = 4
             `)
 
             return response

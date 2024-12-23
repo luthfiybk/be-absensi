@@ -32,6 +32,7 @@ app.use(session({
 app.use(liveReload())
 
 app.use('/api', routes)
+app.disable('etag')
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)

@@ -7,5 +7,6 @@ router.get('/', PresensiController.getAll)
 router.get('/rekap', PresensiController.rekapPresensi)
 router.get('/:id', PresensiController.getById)
 router.post('/masuk', PresensiController.presensiMasuk)
+router.put('/pulang', PresensiController.presensiPulang)
 
 module.exports = router
