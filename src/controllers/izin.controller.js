@@ -1,6 +1,7 @@
 const Izin = require('../models/Izin')
 const jwt = require('jsonwebtoken')
 const {formatISO} = require('date-fns/formatISO')
+const moment = require('moment-timezone')
 
 const IzinController = {
     getAll: async (req, res) => {
@@ -138,6 +139,19 @@ const IzinController = {
             return res.status(200).json({ total_data: parseInt(total_izin[0].total), data: mappedResponse })
         } catch (error) {
             console.log('cek')
+            return res.status(500).json({ message: error.message })
+        }
+    },
+
+    check: async (req, res) => {
+        try {
+            const nip = req.decodedToken.nip
+            const tanggal = moment().tz('Asia/Jakarta').format('YYYY-MM-DD')
+
+            const response = await Izin.check(nip, tanggal)
+
+            return res.status(200).json(response)
+        } catch (error) {
             return res.status(500).json({ message: error.message })
         }
     }

@@ -68,7 +68,8 @@ const SupervisorController = {
                 return{
                     ...item,
                     tanggal: moment(item.tanggal).tz('Asia/Jakarta').format('YYYY-MM-DD'),
-                    jamMasuk: moment(item.jamMasuk).tz('Asia/Jakarta').format('HH:mm:ss')
+                    jamMasuk: moment(item.jamMasuk).tz('Asia/Jakarta').format('HH:mm:ss'),
+                    jamPulang: moment(item.jamPulang).tz('Asia/Jakarta').format('HH:mm:ss')
                 }
             })
 

@@ -108,7 +108,8 @@ const Supervisor = {
     getPresensi: async (divisiId, nama, tanggal, statusId, limit, offset) => {
         try {
             const response = await prisma.$queryRaw(Prisma.sql`
-                SELECT Presensi.id, User.no_karyawan, User.nama, Presensi.tanggal, Presensi.jamMasuk, Status.nama_status as 'status', Presensi.statusId FROM Presensi
+                SELECT Presensi.id, User.no_karyawan, User.nama, Presensi.tanggal, Presensi.jamMasuk, Presensi.jamPulang, Status.nama_status as 'status', Presensi.statusId
+                FROM Presensi
                 LEFT JOIN User ON Presensi.no_karyawan = User.no_karyawan
                 LEFT JOIN Status ON Presensi.statusId = Status.id
                 WHERE User.divisiId = ${divisiId}

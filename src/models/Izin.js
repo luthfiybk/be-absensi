@@ -1,4 +1,5 @@
 const { PrismaClient, Prisma } = require('@prisma/client')
+const { check } = require('./Presensi')
 const prisma = new PrismaClient()
 
 const Izin = {
@@ -141,6 +142,22 @@ const Izin = {
             const response = await prisma.$queryRaw(Prisma.sql`
                 SELECT COUNT(*) as total FROM Izin
                 WHERE no_karyawan = ${no_karyawan}
+            `)
+
+            return response
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    },
+
+    check: async (no_karyawan, tanggal) => {
+        try {
+            const response = await prisma.$queryRaw(Prisma.sql`
+                SELECT *
+                FROM Izin
+                WHERE no_karyawan = ${no_karyawan}
+                AND tanggal = ${tanggal}
+                AND statusId = 6
             `)
 
             return response

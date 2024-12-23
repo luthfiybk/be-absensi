@@ -26,6 +26,7 @@ const PresensiController = {
                 return {
                     ...item,
                     jamMasuk: moment(item.jamMasuk).tz('Asia/Jakarta').format('HH:mm:ss'),
+                    jamPulang: moment(item.jamPulang).tz('Asia/Jakarta').format('HH:mm:ss'),
                 }
             
             })
@@ -136,6 +137,19 @@ const PresensiController = {
         }
     },
 
+    presensiPulang: async (req, res) => {
+        try {
+            const jamPulang = formatISO(new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Jakarta' }), { representation: 'basic' });
+            const no_karyawan = req.decodedToken.no_karyawan;
+
+            const response = await Presensi.presensiPulang(no_karyawan, jamPulang)
+
+            return res.status(201).json(response)
+        } catch (error) {
+            return res.status(500).json({ message: error.message })
+        }
+    },
+
     check: async (req, res) => {
         try {
             const nip = req.decodedToken.nip
@@ -178,6 +192,7 @@ const PresensiController = {
                     ...item,
                     tanggal: moment(item.tanggal).tz('Asia/Jakarta').format('YYYY-MM-DD'),
                     jamMasuk: moment(item.jamMasuk).tz('Asia/Jakarta').format('HH:mm:ss'),
+                    jamPulang: moment(item.jamPulang).tz('Asia/Jakarta').format('HH:mm:ss')
                 }
             })
 

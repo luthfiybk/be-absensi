@@ -22,6 +22,7 @@ const Presensi = {
                     User.nama, 
                     Presensi.tanggal, 
                     Presensi.jamMasuk, 
+                    Presensi.jamPulang,
                     Presensi.statusId, 
                     Status.nama_status as 'status' 
                 FROM Presensi
@@ -83,6 +84,23 @@ const Presensi = {
         }
     },
 
+    presensiPulang: async (no_karyawan, data) => {
+        try {
+            const response = await prisma.presensi.update({
+                where: {
+                    no_karyawan: no_karyawan
+                },
+                data: {
+                    ...data
+                }
+            })
+
+            return response
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    },
+
     check: async (no_karyawan, tanggal) => {
         try {
             const response = await prisma.$queryRaw(Prisma.sql`
@@ -123,6 +141,7 @@ const Presensi = {
                     User.nama, 
                     Presensi.tanggal, 
                     Presensi.jamMasuk, 
+                    Presensi.jamPulang,
                     Presensi.statusId, 
                     Status.nama_status as 'status', 
                     Presensi.latitude, 
