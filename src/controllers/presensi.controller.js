@@ -241,6 +241,7 @@ const PresensiController = {
                 return {
                     ...item,
                     jamMasuk: moment(item.jamMasuk).tz('Asia/Jakarta').format('HH:mm:ss'),
+                    jamPulang: moment(item.jamPulang).tz('Asia/Jakarta').format('HH:mm:ss')
                 }
             })
 

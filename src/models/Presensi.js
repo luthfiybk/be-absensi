@@ -165,6 +165,7 @@ const Presensi = {
                     Presensi.no_karyawan,
                     Presensi.tanggal, 
                     Presensi.jamMasuk, 
+                    Presensi.jamPulang,
                     Presensi.statusId,
                     Status.nama_status as 'status'
                 FROM Presensi
